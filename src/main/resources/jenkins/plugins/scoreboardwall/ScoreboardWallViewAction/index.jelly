@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<j:jelly xmlns:j="jelly:core">
+<j:set var="rootURL" value="${request.contextPath}" />
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <title>ScoreBoard Wall</title>
+
+
+      <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap.min.css" />
+      <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap-responsive.min.css" />
+
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-1.10.1.min.js"></script>
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-ui-1.8.18.min.js"></script>
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>
+
+  </head>
+
+  <body>
+
+  <a>Hello There</a>
+
+
+  <script type="text/javascript">
+
+          var jenkinsUrl = "${rootURL}";
+          var viewName = "All";
+
+          var jenkinsTimeOut =  15000;
+          var lastJenkinsTimeOut = jenkinsTimeOut;
+
+          var jenkinsUpdateInterval = 20000;
+          var lastJenkinsUpdateInterval = jenkinsUpdateInterval;
+
+          var showDisabledBuilds = true;
+
+          var serverTime;
+          var jobsToDisplay = new Array();
+
+          var updateRunning = new Array();
+
+
+
+          <![CDATA[
+
+          jQuery(document).ready(function(){
+
+                getJenkinsApi(jenkinsUrl);
+            });
+
+
+
+          /************** API Calls **********************/
+
+          function getJenkinsApi(jenkinsUrl) {
+
+              updateRunning[viewName] = true;
+
+              //- get jenkins api ------------------------------------------------
+              jQuery.ajax({
+                  url: jenkinsUrl +  "/view/" + viewName + "/api/json",
+                  dataType: 'json',
+                  data: {
+                      "depth": 1
+                  },
+                  success: function(viewApi, textStatus, jqXHR) {
+                      var dateHeader = jqXHR.getResponseHeader("Date");
+                      var date = new Date(dateHeader);
+                      serverTime = date.getTime();
+
+                      var jobNames = getJobNamesToDisplay(viewApi);
+                      getJobs(jobNames);
+
+                      updateRunning[viewName] = false;
+                  },
+                  error: function(e, xhr) {
+                      jobsToDisplay = new Array();
+
+                      updateRunning[viewName] = false;
+                  },
+                  timeout: jenkinsTimeOut
+              });
+          }
+
+
+          function getJobs(jobNames)
+          {
+              updateRunning["repaint"] = true;
+              jQuery.each(jobsToDisplay, function(index, job) {
+                  job.visited = false;
+              });
+              updateRunning["repaint"] = false;
+
+              jQuery.each(jobNames, function(index, jobName) {
+                  if (!updateRunning[jobName])
+                  {
+                      updateRunning[jobName] = true;
+
+                      jQuery.ajax({
+                          url: jenkinsUrl +  "/job/" + jobName + "/api/json",
+                          dataType: "json",
+                          data: {
+                              "tree": "property[wallDisplayName],name,color,lastBuild[number,timestamp,duration,actions[claimed,claimedBy,failCount,skipCount,totalCount],culprits[fullName,property[address]]],lastSuccessfulBuild[duration]"
+                          },
+                          success: function(job, textStatus, jqXHR) {
+
+                              var add = true;
+                              jQuery.each(jobsToDisplay, function(index, oldJob) {
+                                  if (oldJob.name == job.name)
+                                  {
+                                      job.visited = true;
+                                      jobsToDisplay[index] = job;
+                                      add = false;
+                                  }
+
+                              });
+
+                              if(!showDisabledBuilds && job.color === 'disabled') {
+                                  add = false;
+                              }
+
+                              if (add)
+                              {
+                                  jobsToDisplay[jobsToDisplay.length] = job;
+                              }
+
+                              updateRunning[jobName] = false;
+                          },
+                          error: function(e, xhr) {
+                              updateRunning[jobName] = false;
+                          },
+                          timeout: jenkinsTimeOut
+                      });
+                  }
+              });
+          }
+
+
+
+          /********* Helper Functions **************/
+
+
+
+          /**
+           * Takes in an array of job names from getJenkinsApi()
+           * @param viewApi An object from the getJenkinsApi()
+           * @returns {Array}
+           */
+          function getJobNamesToDisplay(viewApi)
+          {
+              var jobNames = new Array();
+
+              jQuery.each(viewApi.jobs, function(index, job) {
+                  jobNames.push(job.name);
+              });
+
+              if (viewApi.views != null && viewApi.views.length)
+              {
+                  jQuery.each(viewApi.views, function(index, nestedView) {
+                      jQuery.each(nestedView.jobs, function(index, job) {
+                          jobNames.push(job.name);
+                      });
+                  });
+              }
+
+
+              return jobNames;
+          }
+
+          ]]>
+
+
+      </script>
+  </body>
+
+</html>
+</j:jelly>
