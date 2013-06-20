@@ -601,10 +601,10 @@ body.scoreboard.nomouse .scoreboard-control-panel .titlebar,.scoreboard.titlebar
 .scoreboard-list .loupe .sbSpinner{display:none;position:absolute;top:0;right:1.15vw;height:5.75vw;width:4vw;background-image:-webkit-canvas(loupeSpinner);background-repeat:no-repeat;background-position:center center;background-size:4vw 4vw;}
 .scoreboard-list .loupe.running .subtitle{display:none;}
 .scoreboard-list .loupe.running .sbSpinner{display:block;}
-.scoreboard-list .itemContainer{position:absolute;top:1.25vw;left:1vw;height:51.5vw;width:44vw;-webkit-transform:translate3d(0,0,0);-webkit-transform-style:preserve-3d;-webkit-perspective:750;}
+.scoreboard-list .itemContainer{top:6.25vw;left:1vw;height:51.5vw;width:44vw;-webkit-transform:translate3d(0,0,0);-webkit-transform-style:preserve-3d;-webkit-perspective:750;}
 .scoreboard-list .fade{position:absolute;bottom:0;height:6vw;width:44vw;z-index:8;background-image:-webkit-linear-gradient(bottom,rgba(0,0,0,1),rgba(0,0,0,0));opacity:0;-webkit-transition:opacity 0.4s ease-in-out;}
 .scoreboard-list.offscreen .fade{opacity:1;}
-.scoreboard-list .scoreboard-list-item{position:absolute;top:0;left:0;height:4.5vw;width:44vw;margin-bottom:0.6vw;background-color:#0f0f0f;z-index:5;opacity:1;-webkit-transform:translate3d(0,0,0);-webkit-transform-origin:center top;outline-color:transparent;outline-width:3px;outline-style:solid;-webkit-transition:outline-color 0.25s ease-in-out;}
+.scoreboard-list .scoreboard-list-item{position:absolute;top:0;left:1vw;height:4.5vw;width:44vw;margin-bottom:0.6vw;background-color:#0f0f0f;z-index:5;opacity:1;-webkit-transform:translate3d(0,0,0);-webkit-transform-origin:center top;outline-color:transparent;outline-width:3px;outline-style:solid;-webkit-transition:outline-color 0.25s ease-in-out;}
 .scoreboard-list .animating .scoreboard-list-item{-webkit-transition:-webkit-transform 0.25s ease-in-out,opacity 0.25s ease-in-out,outline-color 0.25s ease-in-out;}
 .scoreboard-list .scoreboard-list-item .icon{position:absolute;top:0;left:0;height:4.5vw;width:5.5vw;background-size:3.5vw 3.5vw;background-repeat:no-repeat;background-position:1.5vw center;opacity:0.7;}
 .scoreboard-list .scoreboard-list-item .title{color:#7e7e7e;font-size:2.3vw;font-weight:lighter;height:4.5vw;width:27vw;line-height:4.5vw;padding-left:7vw;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}

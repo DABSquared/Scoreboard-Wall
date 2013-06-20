@@ -16,6 +16,8 @@
 
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-1.10.1.min.js"></script>
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-ui-1.8.18.min.js"></script>
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/sprokets.js"></script>
+
       <!--<script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>-->
 
   </head>
@@ -48,8 +50,12 @@
 
                                             </div>
                                         </div>
+
                                     </div>
-                                    <div class="itemContainer"></div>
+
+                                    <div class="itemContainer">
+
+                                    </div>
                                     <div class="fade"></div>
                                 </div>
 
@@ -145,7 +151,33 @@
           jQuery(document).ready(function(){
 
                 getJenkinsApi(jenkinsUrl);
+
+
+              for(var i = 0; i < 10; i++ ) {
+                  renderListItem(i, null);
+              }
+
             });
+
+
+
+
+          function renderListItem(index, data) {
+              if(index == 0) {
+
+              } else {
+                  var top = 1 + (index * 5);
+
+                  var html = '<div class="fail cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ top+'vw;"><div class="icon"></div><div class="title reltext">Test 1</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
+
+
+
+                  jQuery(".itemContainer").append(html);
+              }
+
+
+
+          }
 
 
 
