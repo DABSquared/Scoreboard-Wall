@@ -8,18 +8,116 @@
     <title>ScoreBoard Wall</title>
 
 
-      <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap.min.css" />
-      <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap-responsive.min.css" />
+      <!--<link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap.min.css" />-->
+      <!--<link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/bootstrap-responsive.min.css" />-->
+
+
+      <link rel="stylesheet" type="text/css" href="${rootURL}/plugin/scoreboardwall/css/scoreboard.css" />
 
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-1.10.1.min.js"></script>
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-ui-1.8.18.min.js"></script>
-      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>
+      <!--<script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>-->
 
   </head>
 
-  <body>
 
-  <a>Hello There</a>
+  <body class="scoreboard xcs toplevel">
+
+      <div class="cc-view" id="root">
+        <div id="header" class="cc-header-view chrome cc-view">
+
+        </div>
+        <div id="main" class="cc-main-view wrapchrome cc-view">
+            <div id="content" class="wrapchrome no-secondary animates">
+                <div id="content-inner">
+                    <div id="content-primary" class="wrapchrome full-width">
+                        <div class="cc-view scoreboard">
+
+
+                            <div class="cc-view scoreboard-bots">
+                                <div class="cc-view scoreboard-list">
+                                    <div class="loupeContainer" style="background-size: 100% 1012px; ">
+                                        <div class="loupe fail  ">
+                                            <div class="title reltext" style="z-index: 1; ">
+                                                GitLab Development Bot
+                                            </div>
+                                            <div class="subtitle reltext" style="z-index: 1; ">
+                                                14 hrs ago
+                                            </div>
+                                            <div class="sbSpinner">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="itemContainer"></div>
+                                    <div class="fade"></div>
+                                </div>
+
+
+                                <div class="cc-view scoreboard-entity scoreboard-bot-run-entity">
+                                    <div class="innerView">
+                                        <div class="header">
+                                            <h1 class="title reltext animatable" style="z-index: 1; ">Integration 1</h1>
+                                        </div>
+
+                                        <div class="status">
+                                            <div class="bot-run-summary" style="-webkit-transform: translateY(14px) scale(1.136150234741784); ">
+                                                <div class="status errors none">
+                                                    <div class="count ellipsis reltext" style="z-index: 1; ">
+
+                                                    </div>
+                                                    <div class="label ellipsis reltext" style="z-index: 1; ">
+                                                        Errors
+                                                    </div>
+                                                </div>
+                                                <div class="status warnings none">
+                                                    <div class="count ellipsis reltext" style="z-index: 1; ">
+
+                                                    </div>
+                                                    <div class="label ellipsis reltext" style="z-index: 1; ">
+                                                    Warnings
+                                                    </div>
+                                                </div>
+                                                <div class="status issues none">
+                                                    <div class="count ellipsis reltext" style="z-index: 1; ">
+
+                                                    </div>
+                                                    <div class="label ellipsis reltext" style="z-index: 1; ">
+                                                        Analysis
+                                                    </div>
+                                                </div>
+                                                <div class="status test-summary none">
+                                                    <div class="count ellipsis reltext" style="z-index: 1; ">
+
+                                                    </div>
+                                                    <div class="label passed ellipsis reltext" style="z-index: 1; ">
+                                                        Passed Tests
+                                                    </div>
+                                                    <div class="label failed ellipsis reltext" style="z-index: 1; ">
+                                                        Failed Tests
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="commiters">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="content-secondary" class="wrapchrome">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
 
 
   <script type="text/javascript">

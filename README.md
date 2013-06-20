@@ -1,19 +1,19 @@
-Jenkins EzWall Plugin
+Jenkins ScoreBoard Wall Plugin
 ============================
 
-Read more: [http://wiki.jenkins-ci.org/display/JENKINS/EzWall+Plugin](http://wiki.jenkins-ci.org/display/JENKINS/EzWall+Plugin)
+[![Build Status](http://jenkins.dabsquared.com/buildStatus/icon?job=Scoreboard Wall)](http://jenkins.dabsquared.com/job/Scoreboard%20Wall/)
+
 
 Description
 --------
 
-This plugin simply add a button to display a fullscreen buildwall on each view.
 
 License
 -------
 
 	(The MIT License)
 
-	Copyright (c) 2012 Axel Haustant
+	Copyright (c) 2013 Daniel Brooks
 
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the
