@@ -141,8 +141,12 @@
 
           var serverTime;
           var jobsToDisplay = new Array();
+          var displayedIndex = 0;
+
+
 
           var updateRunning = new Array();
+
 
 
 
@@ -150,35 +154,76 @@
 
           jQuery(document).ready(function(){
 
-                getJenkinsApi(jenkinsUrl);
+              getJenkinsApi(jenkinsUrl);
+
+              initialLoad();
+
+              setInterval(rotate, 3000);
+
+          });
 
 
+          function initialLoad() {
               for(var i = 0; i < 10; i++ ) {
-                  renderListItem(i, null);
+                  var data = new Array();
+                  data['name'] =  "A Job:" + i;
+                  jobsToDisplay[i] = data;
+
+                  if(i == 0) {
+                      var html = getTopItemHtml(i);
+                      jQuery(".loupeContainer").html(html);
+                  } else {
+                      var html = getSubItemsHtml(i, i);
+                      jQuery(".itemContainer").append(html);
+                  }
+              }
+          }
+
+
+          function rotate() {
+              var indexToRotateDown = displayedIndex;
+              var indexToBringUp = displayedIndex+1;
+              if(indexToBringUp >= jobsToDisplay.length) {
+                  indexToBringUp = 0;
               }
 
-            });
-
-
-
-
-          function renderListItem(index, data) {
-              if(index == 0) {
-
-              } else {
-                  var top = 1 + (index * 5);
-
-                  var html = '<div class="fail cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ top+'vw;"><div class="icon"></div><div class="title reltext">Test 1</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
-
-
-
+              jQuery("#job"+indexToRotateDown ).fadeOut('fast', function() {
+                  jQuery("#job"+indexToRotateDown).remove();
+                  var html = getSubItemsHtml(indexToRotateDown,jobsToDisplay.length);
+                  console.log(html);
                   jQuery(".itemContainer").append(html);
-              }
+              });
 
 
+              jQuery("#job"+indexToBringUp).fadeOut('fast', function() {
+                  jQuery("#job"+indexToBringUp).remove();
+                  jQuery(".scoreboard-list-item").each( function(index, item){
+                      var topHeight = 6 + (index * 5);
+                      item.style.top = topHeight + "vw";
+                  });
+                  var html = getTopItemHtml(indexToBringUp);
+                  jQuery(".loupeContainer").html(html);
+              });
+
+
+            displayedIndex = indexToBringUp;
 
           }
 
+
+          function getTopItemHtml(arrayIndex) {
+              var data = jobsToDisplay[arrayIndex];
+              var html = '<div class="loupe fail  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">14 hrs ago</div><div class="sbSpinner"></div></div>';
+              return html;
+          }
+
+
+          function getSubItemsHtml(arrayIndex, newIndex) {
+              var data = jobsToDisplay[arrayIndex];
+              var topHeight = 1 + (newIndex * 5);
+              var html = '<div id="job'+ arrayIndex +'" class="fail cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
+              return html;
+          }
 
 
           /************** API Calls **********************/
