@@ -17,6 +17,7 @@
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-1.10.1.min.js"></script>
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-ui-1.8.18.min.js"></script>
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery.timeago.js"></script>
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/dateformat.js"></script>
 
       <!--<script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>-->
 
@@ -163,6 +164,11 @@
                   return;
               }
 
+              if(jobsToDisplay.length == 1) {
+                  displayedIndex = 0;
+                  return;
+              }
+
               var indexToRotateDown = displayedIndex;
               var indexToBringUp = displayedIndex+1;
               if(indexToBringUp >= jobsToDisplay.length) {
@@ -213,6 +219,11 @@
                       serverTime = date.getTime();
 
                       var jobNames = getJobNamesToDisplay(viewApi);
+
+                      if(jobNames.length == 0) {
+                          setNoJobs();
+                      }
+
                       getJobs(jobNames);
 
                       updateRunning[viewName] = false;
@@ -318,34 +329,57 @@
 
           function getTopItemHtml(arrayIndex) {
               var data = jobsToDisplay[arrayIndex];
-              var html = '<div class="loupe '+ getClassForColor(data['color']) +'  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">Add a time</div><div class="sbSpinner"></div></div>';
+
+              var timestring = "Never Built";
+
+              if(data['lastBuild']) {
+                  if(data['lastBuild']['timestamp']) {
+                      var today = new Date();
+                      var date = new Date(data['lastBuild']['timestamp']);
+                      if(today.toDateString() == date.toDateString()) {
+                          timestring = date.format('shortTime');
+
+                      } else {
+                          timestring = date.format('m/dd/yy');
+                      }
+                  }
+              }
+
+              var html = '<div class="loupe '+ getClassForColor(data['color']) +'  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">'+ timestring +'</div><div class="sbSpinner"></div></div>';
               return html;
           }
 
-          function getClassForColor(color) {
-              if(color == "grey" || color == "disabled") {
-                  return "disabled";
-              } else if(color == "red" || color == "aborted") {
-                  return "fail";
-              } else if(color == "blue") {
-                  return "success";
-              }else {
-                  return "warning";
-              }
-          }
 
           function getSubItemsHtml(arrayIndex, newIndex) {
               var data = jobsToDisplay[arrayIndex];
               var topHeight = 1 + (newIndex * 5);
 
-              var date = null;
+              var timestring = "Never Built";
 
-              if(data['timestamp']) {
-                  date = new Date(data['timestamp']*1000);
+              if(data['lastBuild']) {
+                  if(data['lastBuild']['timestamp']) {
+                      var today = new Date();
+                      var date = new Date(data['lastBuild']['timestamp']);
+                      if(today.toDateString() == date.toDateString()) {
+                          timestring = date.format('shortTime');
+
+                      } else {
+                          timestring = date.format('m/dd/yy');
+                      }
+                  }
               }
 
-              var html = '<div id="job'+ arrayIndex +'" class="'+ getClassForColor(data['color']) +' cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">Add a time</div><div class="sbSpinner"> </div></div>';
+
+
+              var html = '<div id="job'+ arrayIndex +'" class="'+ getClassForColor(data['color']) +' cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">'+ timestring +'</div><div class="sbSpinner"> </div></div>';
               return html;
+          }
+
+          function setNoJobs() {
+              var html = '<div class="loupe " id="noJobs" ><div style="z-index: 1; " class="title reltext">No Jobs</div><div style="z-index: 1; " class="subtitle reltext"></div><div class="sbSpinner"></div></div>';
+              jQuery(".scoreboard-entity .innerView .header .title").html("No Jobs");
+
+              jQuery(".loupeContainer").html(html);
           }
 
           function addJob(arrayIndex) {
@@ -362,7 +396,7 @@
 
           function updateJob(arrayIndex) {
               var data = jobsToDisplay[arrayIndex];
-              jQuery("job" + arrayIndex).removeClass("fail").removeClass("success").removeClass("success").addClass(getClassForColor(data['color']));
+              jQuery("job" + arrayIndex).removeClass("fail").removeClass("success").removeClass("success").removeClass("loading").addClass(getClassForColor(data['color']));
 
               if(displayedIndex == arrayIndex) {
                   loadDataToTheRight(arrayIndex);
@@ -377,11 +411,26 @@
               if(data['lastBuild']) {
                   titleString = "Last Build #" + data['lastBuild']['number'];
               } else {
-                  titleString = "Never Built Before";
+                  titleString = "Never Built";
               }
 
               jQuery(".scoreboard-entity .innerView .header .title").html(titleString);
 
+          }
+
+
+          function getClassForColor(color) {
+              if(color == "grey" || color == "disabled"|| color == "notbuilt") {
+                  return "disabled";
+              } else if(color == "red" || color == "aborted") {
+                  return "fail";
+              } else if(color == "blue") {
+                  return "success";
+              } else if (color == "red_anime" || color == "yellow_anime" ||color == "blue_anime" ||color == "grey_anime" || color == "disabled_anime" ||color == "aborted_anime" ||color == "notbuilt_anime") {
+                  return "loading";
+              } else {
+                  return "warning";
+              }
           }
 //          {"name":"Curveu iOS","color":"blue","lastBuild":{"actions":[{},{},{},{}],"duration":530678,"number":36,"timestamp":1367011909000,"culprits":[]},"lastSuccessfulBuild":{"duration":530678},"property":[]}
 
