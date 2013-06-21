@@ -325,11 +325,11 @@
           function getClassForColor(color) {
               if(color == "grey" || color == "disabled") {
                   return "disabled";
-              } else if(color == "red") {
+              } else if(color == "red" || color == "aborted") {
                   return "fail";
               } else if(color == "blue") {
                   return "success";
-              } else {
+              }else {
                   return "warning";
               }
           }
