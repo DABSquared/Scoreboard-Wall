@@ -15,6 +15,17 @@
  * Software License Agreement accompanying the package this file is part of.
  **/
 
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    border: 0 none;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    vertical-align: baseline;
+}
 
 /*/BinaryCache/CoreCollaboration/CoreCollaboration-340~7/Root/Applications/Server.app/Contents/ServerRoot/usr/share/collabd/coreclientxcode/public/stylesheets/compressed.css*/
 /*/BinaryCache/CoreCollaboration/CoreCollaboration-340~7/Root/Applications/Server.app/Contents/ServerRoot/usr/share/collabd/coreclientxcode/public/stylesheets/xc_elements.css*/
@@ -585,7 +596,7 @@ body.scoreboard.nomouse .scoreboard-control-panel .titlebar,.scoreboard.titlebar
 .scoreboard-control-panel .settingsPanel .settingGroup .label{display:inline-block;vertical-align:top;width:26vw;text-align:right;font-size:1.5vw;font-weight:lighter;padding-top:0.3vw;}
 .scoreboard-control-panel .settingsPanel .settingGroup .options{display:inline-block;vertical-align:top;width:30vw;margin-left:1.8vw;}
 .scoreboard-control-panel .settingsPanel .radioButton{margin:0.3vw 0;}
-.scoreboard-control-panel .settingsPanel .radioButton.disabled{opacity:0.3;}
+.scoreboard-control-panel .settingsPanel .radioButton.disabled{opacity:0.3;}0
 .scoreboard-control-panel .settingsPanel .radioButton .circle{position:relative;width:1.38vw;height:1.38vw;border-radius:50%;border:2px solid #fff;cursor:default;-webkit-user-select:none;display:inline-block;vertical-align:middle;}
 .scoreboard-control-panel .settingsPanel .radioButton .dot{position:absolute;top:50%;left:50%;width:0.6vw;height:0.6vw;margin-top:-0.3vw;margin-left:-0.3vw;border-radius:50%;background-color:#fff;display:none;}
 .scoreboard-control-panel .settingsPanel .radioButton.selected .dot{display:block;}
@@ -598,7 +609,7 @@ body.scoreboard.nomouse .scoreboard-control-panel .titlebar,.scoreboard.titlebar
 .scoreboard-list.updatingLoupe .loupe{opacity:0;}
 .scoreboard-list .loupe .title{color:#fff;font-size:3.1vw;font-weight:lighter;height:5.75vw;width:27vw;line-height:5.75vw;padding-left:7vw;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .scoreboard-list .loupe .subtitle{position:absolute;top:0;right:1.15vw;color:#fff;font-size:1.5vw;font-weight:lighter;height:5.75vw;width:8.85vw;line-height:5.75vw;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
-.scoreboard-list .loupe .sbSpinner{display:none;position:absolute;top:0;right:1.15vw;height:5.75vw;width:4vw;background-image:-webkit-canvas(loupeSpinner);background-repeat:no-repeat;background-position:center center;background-size:4vw 4vw;}
+.scoreboard-list .loupe .sbSpinner{display:none;position:absolute;top:0;right:1.15vw;height:5.75vw;width:4vw;background:transparent url(../img/spinner_18x18.gif);background-repeat:no-repeat;background-position:center center;background-size:4vw 4vw;}
 .scoreboard-list .loupe.running .subtitle{display:none;}
 .scoreboard-list .loupe.running .sbSpinner{display:block;}
 .scoreboard-list .itemContainer{top:6.25vw;left:1vw;height:51.5vw;width:44vw;-webkit-transform:translate3d(0,0,0);-webkit-transform-style:preserve-3d;-webkit-perspective:750;}
@@ -609,7 +620,9 @@ body.scoreboard.nomouse .scoreboard-control-panel .titlebar,.scoreboard.titlebar
 .scoreboard-list .scoreboard-list-item .icon{position:absolute;top:0;left:0;height:4.5vw;width:5.5vw;background-size:3.5vw 3.5vw;background-repeat:no-repeat;background-position:1.5vw center;opacity:0.7;}
 .scoreboard-list .scoreboard-list-item .title{color:#7e7e7e;font-size:2.3vw;font-weight:lighter;height:4.5vw;width:27vw;line-height:4.5vw;padding-left:7vw;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .scoreboard-list .scoreboard-list-item .subtitle{position:absolute;top:0;right:1.15vw;color:#7e7e7e;font-size:1.5vw;font-weight:lighter;height:4.5vw;width:8.85vw;line-height:4.5vw;text-align:right;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.scoreboard-list .loupe.loading,.scoreboard-list .scoreboard-list-item.loading .icon{background-image:url(../img/spinner_large_transparent.gif);}
 .scoreboard-list .loupe.success,.scoreboard-list .scoreboard-list-item.success .icon{background-image:url(../img/success.svg);}
+.scoreboard-list .loupe.disabled,.scoreboard-list .scoreboard-list-item.disabled .icon{background-image:url(../img/disabled.svg);}
 .scoreboard-list .loupe.error,.scoreboard-list .scoreboard-list-item.error .icon{background-image:url(../img/error.svg);}
 .scoreboard-list .loupe.fail,.scoreboard-list .scoreboard-list-item.fail .icon{background-image:url(../img/failure.svg);}
 .scoreboard-list .loupe.warning,.scoreboard-list .scoreboard-list-item.warning .icon{background-image:url(../img/warning.svg);}
@@ -656,7 +669,7 @@ body.scoreboard.nomouse .scoreboard-control-panel .titlebar,.scoreboard.titlebar
 .scoreboard-bots .scoreboard-bot-run-entity .status .status.none.warnings .label{background-image:url(../img/warning_disabled.svg);}
 .scoreboard-bots .scoreboard-bot-run-entity .status .status.none.issues .label{background-image:url(../img/analysis_disabled.svg);}
 .scoreboard-bots .scoreboard-bot-run-entity .status .status.none.test-summary.passed .label{background-image:url(../img/test_success_disabled.svg);}
-.scoreboard-bots .scoreboard-bot-run-entity .status .status..none.test-summary.failed .label{background-image:url(../img/test_failure_disabled.svg);}
+.scoreboard-bots .scoreboard-bot-run-entity .status .status.none.test-summary.failed .label{background-image:url(../img/test_failure_disabled.svg);}
 .scoreboard-bots .scoreboard-bot-run-entity .committers{position:absolute;left:2.6vw;right:1.1vw;bottom:17.95vw;height:16.6vw;padding-top:0.1vw;background-image:-webkit-linear-gradient(top,#3a3b3a,#3a3b3a);background-size:100% 0.1vw;background-repeat:no-repeat;}
 .scoreboard-bots .scoreboard-bot-run-entity .committers .empty{display:none;position:relative;height:16.6vw;-webkit-transition-delay:0.4s;}
 .scoreboard-bots .scoreboard-bot-run-entity .committers .normal{-webkit-transition-delay:0.4s;}

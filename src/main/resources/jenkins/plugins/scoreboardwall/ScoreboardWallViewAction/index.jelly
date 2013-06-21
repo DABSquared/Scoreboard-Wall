@@ -39,17 +39,13 @@
                             <div class="cc-view scoreboard-bots">
                                 <div class="cc-view scoreboard-list">
                                     <div class="loupeContainer" style="background-size: 100% 1012px; ">
-                                        <div class="loupe fail  ">
+                                        <div id="job1" class="loupe loading  ">
                                             <div class="title reltext" style="z-index: 1; ">
-                                                GitLab Development Bot
+                                                Loading Jobs
                                             </div>
                                             <div class="subtitle reltext" style="z-index: 1; ">
-                                                14 hrs ago
                                             </div>
-                                            <div class="sbSpinner">
-
-                                            </div>
-                                        </div>
+                                            <div class="sbSpinner"></div></div>
 
                                     </div>
 
@@ -63,7 +59,7 @@
                                 <div class="cc-view scoreboard-entity scoreboard-bot-run-entity">
                                     <div class="innerView">
                                         <div class="header">
-                                            <h1 class="title reltext animatable" style="z-index: 1; ">Integration 1</h1>
+                                            <h1 class="title reltext animatable" style="z-index: 1; ">Loading Jobs</h1>
                                         </div>
 
                                         <div class="status">
@@ -141,6 +137,7 @@
 
           var serverTime;
           var jobsToDisplay = new Array();
+
           var displayedIndex = 0;
 
 
@@ -153,34 +150,13 @@
           <![CDATA[
 
           jQuery(document).ready(function(){
-
-              getJenkinsApi(jenkinsUrl);
-
-              initialLoad();
-
-              setInterval(rotate, 3000);
-
+              setInterval(function() { getJenkinsApi(jenkinsUrl) }, 20000);
+              setInterval(rotate, 8000);
           });
 
 
-          function initialLoad() {
-              for(var i = 0; i < 10; i++ ) {
-                  var data = new Array();
-                  data['name'] =  "A Job:" + i;
-                  jobsToDisplay[i] = data;
-
-                  if(i == 0) {
-                      var html = getTopItemHtml(i);
-                      jQuery(".loupeContainer").html(html);
-                  } else {
-                      var html = getSubItemsHtml(i, i);
-                      jQuery(".itemContainer").append(html);
-                  }
-              }
-          }
-
-
           function rotate() {
+
               var indexToRotateDown = displayedIndex;
               var indexToBringUp = displayedIndex+1;
               if(indexToBringUp >= jobsToDisplay.length) {
@@ -190,7 +166,6 @@
               jQuery("#job"+indexToRotateDown ).fadeOut('fast', function() {
                   jQuery("#job"+indexToRotateDown).remove();
                   var html = getSubItemsHtml(indexToRotateDown,jobsToDisplay.length);
-                  console.log(html);
                   jQuery(".itemContainer").append(html);
               });
 
@@ -206,24 +181,11 @@
               });
 
 
-            displayedIndex = indexToBringUp;
+              displayedIndex = indexToBringUp;
+              updateJob(indexToBringUp);
 
           }
 
-
-          function getTopItemHtml(arrayIndex) {
-              var data = jobsToDisplay[arrayIndex];
-              var html = '<div class="loupe fail  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">14 hrs ago</div><div class="sbSpinner"></div></div>';
-              return html;
-          }
-
-
-          function getSubItemsHtml(arrayIndex, newIndex) {
-              var data = jobsToDisplay[arrayIndex];
-              var topHeight = 1 + (newIndex * 5);
-              var html = '<div id="job'+ arrayIndex +'" class="fail cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
-              return html;
-          }
 
 
           /************** API Calls **********************/
@@ -298,7 +260,11 @@
                               if (add)
                               {
                                   jobsToDisplay[jobsToDisplay.length] = job;
+                                  addJob(jobsToDisplay.length-1);
+                              } else {
+                                  updateJob(jobsToDisplay.length-1);
                               }
+
 
                               updateRunning[jobName] = false;
                           },
@@ -342,6 +308,60 @@
 
               return jobNames;
           }
+
+
+          function getTopItemHtml(arrayIndex) {
+              var data = jobsToDisplay[arrayIndex];
+              var html = '<div class="loupe '+ getClassForColor(data['color']) +'  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">14 hrs ago</div><div class="sbSpinner"></div></div>';
+              return html;
+          }
+
+          function getClassForColor(color) {
+              if(color == "grey" || color == "disabled") {
+                  return "disabled";
+              } else if(color == "red") {
+                  return "fail";
+              } else if(color == "blue") {
+                  return "success";
+              } else {
+                  return "warning";
+              }
+          }
+
+          function getSubItemsHtml(arrayIndex, newIndex) {
+              var data = jobsToDisplay[arrayIndex];
+              var topHeight = 1 + (newIndex * 5);
+              var html = '<div id="job'+ arrayIndex +'" class="'+ getClassForColor(data['color']) +' cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
+              return html;
+          }
+
+          function addJob(arrayIndex) {
+              if(arrayIndex == 0) {
+                  var html = getTopItemHtml(arrayIndex);
+                  jQuery(".loupeContainer").html(html);
+              } else {
+                  var html = getSubItemsHtml(arrayIndex,arrayIndex);
+                  jQuery(".itemContainer").append(html);
+              }
+          }
+
+
+          function updateJob(arrayIndex) {
+              var data = jobsToDisplay[arrayIndex];
+              jQuery("job" + arrayIndex).removeClass("fail").removeClass("success").removeClass("success").addClass(getClassForColor(data['color']));
+
+              if(displayedIndex == arrayIndex) {
+                  loadDataToTheRight(arrayIndex);
+              }
+          }
+
+          function loadDataToTheRight(arrayIndex) {
+              var data = jobsToDisplay[arrayIndex];
+
+
+
+          }
+//          {"name":"Curveu iOS","color":"blue","lastBuild":{"actions":[{},{},{},{}],"duration":530678,"number":36,"timestamp":1367011909000,"culprits":[]},"lastSuccessfulBuild":{"duration":530678},"property":[]}
 
           ]]>
 
