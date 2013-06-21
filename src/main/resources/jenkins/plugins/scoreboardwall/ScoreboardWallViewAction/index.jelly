@@ -16,7 +16,7 @@
 
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-1.10.1.min.js"></script>
       <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery-ui-1.8.18.min.js"></script>
-      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/sprokets.js"></script>
+      <script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/jquery.timeago.js"></script>
 
       <!--<script type="text/javascript" src="${rootURL}/plugin/scoreboardwall/js/bootstrap.min.js"></script>-->
 
@@ -150,12 +150,18 @@
           <![CDATA[
 
           jQuery(document).ready(function(){
+              getJenkinsApi(jenkinsUrl)
               setInterval(function() { getJenkinsApi(jenkinsUrl) }, 20000);
               setInterval(rotate, 8000);
           });
 
 
           function rotate() {
+
+              if(jobsToDisplay.length == 0) {
+                  displayedIndex = 0;
+                  return;
+              }
 
               var indexToRotateDown = displayedIndex;
               var indexToBringUp = displayedIndex+1;
@@ -312,7 +318,7 @@
 
           function getTopItemHtml(arrayIndex) {
               var data = jobsToDisplay[arrayIndex];
-              var html = '<div class="loupe '+ getClassForColor(data['color']) +'  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">14 hrs ago</div><div class="sbSpinner"></div></div>';
+              var html = '<div class="loupe '+ getClassForColor(data['color']) +'  " id="job'+ arrayIndex +'" ><div style="z-index: 1; " class="title reltext">'+data['name']+'</div><div style="z-index: 1; " class="subtitle reltext">Add a time</div><div class="sbSpinner"></div></div>';
               return html;
           }
 
@@ -331,7 +337,14 @@
           function getSubItemsHtml(arrayIndex, newIndex) {
               var data = jobsToDisplay[arrayIndex];
               var topHeight = 1 + (newIndex * 5);
-              var html = '<div id="job'+ arrayIndex +'" class="'+ getClassForColor(data['color']) +' cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">In 2 min</div><div class="sbSpinner"> </div></div>';
+
+              var date = null;
+
+              if(data['timestamp']) {
+                  date = new Date(data['timestamp']*1000);
+              }
+
+              var html = '<div id="job'+ arrayIndex +'" class="'+ getClassForColor(data['color']) +' cc-view scoreboard-list-item scoreboard-bot-run-list-item" style="-webkit-transform: translate3d(0px, 97px, 0px); opacity: 1; top:'+ topHeight+'vw;"><div class="icon"></div><div class="title reltext">'+data['name']+'</div><div class="subtitle reltext">Add a time</div><div class="sbSpinner"> </div></div>';
               return html;
           }
 
@@ -343,6 +356,7 @@
                   var html = getSubItemsHtml(arrayIndex,arrayIndex);
                   jQuery(".itemContainer").append(html);
               }
+              updateJob(arrayIndex);
           }
 
 
@@ -358,7 +372,15 @@
           function loadDataToTheRight(arrayIndex) {
               var data = jobsToDisplay[arrayIndex];
 
+              var titleString = "";
 
+              if(data['lastBuild']) {
+                  titleString = "Last Build #" + data['lastBuild']['number'];
+              } else {
+                  titleString = "Never Built Before";
+              }
+
+              jQuery(".scoreboard-entity .innerView .header .title").html(titleString);
 
           }
 //          {"name":"Curveu iOS","color":"blue","lastBuild":{"actions":[{},{},{},{}],"duration":530678,"number":36,"timestamp":1367011909000,"culprits":[]},"lastSuccessfulBuild":{"duration":530678},"property":[]}
