@@ -3,7 +3,6 @@ Jenkins ScoreBoard Wall Plugin
 
 [![Build Status](http://jenkins.dabsquared.com/buildStatus/icon?job=Scoreboard Wall)](http://jenkins.dabsquared.com/job/Scoreboard%20Wall/)
 
-
 Description
 --------
 
